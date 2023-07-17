@@ -1,9 +1,15 @@
 # Classification using Selected Features
+# Remember to run the experiment for each dataset separately
+library(caret) # Required for training classifier
+library(e1071) # Required for classify_instance function
+library(RSiena)  # For computing the reward
+library(rlang) # Required for compute_reward function
+
 selected_features <- c()  # Initialize selected features
-classifier <- train_classifier(X[, selected_features], y)  # Train a classifier using the selected features
+classifier <- train(X[, selected_features], y)  # Train a classifier using the selected features
 
 for (new_instance in new_instances) {
-  predicted_label <- classify_instance(classifier, new_instance)  # Classify the instance using the trained classifier
+  predicted_label <- predict(classifier, newdata = new_instance)  # Classify the instance using the trained classifier
 }
 
 reward <- compute_reward(classifier_performance)  # Compute reward based on classifier performance
@@ -21,7 +27,8 @@ for (episode in 1:num_episodes) {
 predicted_labels <- list()
 for (new_instance in new_instances) {
   selected_features <- select_features(Q)  # Select features based on Q-values
-  classifier <- train_classifier(X[, selected_features], y)  # Train a classifier using the selected features
-  predicted_label <- classify_instance(classifier, new_instance)  # Classify the instance using the trained classifier
+  classifier <- train(X[, selected_features], y)  # Train a classifier using the selected features
+  predicted_label <- predict(classifier, newdata = new_instance)  # Classify the instance using the trained classifier
   predicted_labels <- c(predicted_labels, predicted_label)
 }
+
