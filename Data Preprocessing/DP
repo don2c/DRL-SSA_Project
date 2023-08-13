@@ -1,143 +1,63 @@
-# The algorithm description of Data Preprocessing using UMAP, TSA-LSTM, and BERT
-# Each dataset must be run separately
 # Required libraries
-library(tidyverse)
+library(umap)
+library(keras)
 
-# File path to the .tar.gz file
-file_path <- "path/to/dataset.tar.gz"
-
-# Dummy functions (without actual implementation for brevity)
-initiate_memory_module <- function() {
-  return("Memory Module")
-}
-
-apply_data_cleaning <- function(dataset) {
-  return(paste("Cleaned", dataset))
-}
-
-umap_reduction <- function(dataset) {
-  return(paste("Reduced", dataset))
-}
-
-lstm_analysis <- function(dataset) {
-  return(paste("Time Series", dataset))
-}
-
-bert_tokenization <- function(text) {
-  return(paste("Tokenized", text))
-}
-
-apply_text_cleaning <- function(tokenized_text) {
-  return(paste("Cleaned", tokenized_text))
-}
-
-pad_truncate_sequence <- function(cleaned_text) {
-  return(paste("Processed", cleaned_text))
-}
-
-evaluate_model <- function(testing_set, equation) {
-  return(paste("Evaluation Result:", testing_set, equation))
-}
-
-# Extract data from .tar.gz file
-extracted_dir <- "extracted_data"
-dir.create(extracted_dir)  # Create a directory to extract the files
-
-# Extract the .tar.gz file using the system tar command
-system(paste("tar -xf", file_path, "-C", extracted_dir))
-
-# Read the extracted data
-osn_account_datasets <- list(
-  dataset1 = read.csv(file.path(extracted_dir, "dataset.csv"))
-)
-
-text_features <- list(
-  "This is the first text.",
-  "Here is another text.",
-  "One more text for analysis."
-)
-
-testing_set <- list(
-  test1 = data.frame(
-    id = 1:3,
-    value = c(10, 20, 30)
-  ),
-  test2 = data.frame(
-    id = 1:3,
-    value = c(5, 15, 25)
-  )
-)
-
-equation <- "y = 2x + 3"
-
-# Running the code
-memory_module <- initiate_memory_module()
-cleaned_data <- apply_data_cleaning(osn_account_datasets)
-reduced_data <- umap_reduction(cleaned_data)
-time_series_data <- lstm_analysis(reduced_data)
-processed_data <- list()
-
-for (text_feature in text_features) {
-  tokenized_text <- bert_tokenization(text_feature)
-  cleaned_text <- apply_text_cleaning(tokenized_text)
-  processed_text <- pad_truncate_sequence(cleaned_text)
-  processed_data[[text_feature]] <- processed_text
-}
-
-evaluation_result <- evaluate_model(testing_set, equation)
-
-preprocessed_dataset <- list(
-  cleaned_data = cleaned_data,
-  reduced_data = reduced_data,
-  time_series_data = time_series_data,
-  processed_data = processed_data
-)
-
-# Printing the results
-print(memory_module)
-print(preprocessed_dataset)
-print(evaluation_result)
-
-.........................................................................................................................
-Below are the steps to follow for Data Preprocessing. However, remember to run the experiment for each dataset.
-.........................................................................................................................
-
-# Input:
-# - OSN account datasets (Facebook, Google+, Twitter)
+# Input: OSN account datasets (Facebook, Google+, Twitter)
+# Assuming datasets are loaded as dataframes: facebook_data, googleplus_data, twitter_data
 
 # Initiate the memory module conditions
-memory_module <- initiate_memory_module()
+# (This step is abstract in the algorithm, so you might need to provide more details)
 
-# Data Cleaning:
-# Apply vectorized operations to remove any missing or irrelevant or duplicate data from the dataset.
-cleaned_data <- apply_data_cleaning(osn_account_datasets)
-
-# Dimensionality Reduction:
-# Reduce the size of the dataset while keeping the required features by using UMAP.
-reduced_data <- umap_reduction(cleaned_data)
-
-# Time Series Analysis:
-# Use a time-series analysis technique such as LSTM to capture temporal patterns and improve model accuracy.
-time_series_data <- lstm_analysis(reduced_data)
-
-# Textual Data Pre-processing:
-# For each text-based feature, apply BERT for pre-processing:
-processed_data <- list()
-for (text_feature in text_features) {
-  tokenized_text <- bert_tokenization(text_feature)
-  cleaned_text <- apply_text_cleaning(tokenized_text)
-  processed_text <- pad_truncate_sequence(cleaned_text)
-  processed_data[[text_feature]] <- processed_text
+# Data Cleaning
+clean_data <- function(data) {
+  # Remove missing values
+  data <- na.omit(data)
+  
+  # Remove duplicates
+  data <- unique(data)
+  
+  return(data)
 }
 
-# Evaluate the model using the testing set on the equation
-evaluation_result <- evaluate_model(testing_set, equation)
+facebook_data <- clean_data(facebook_data)
+googleplus_data <- clean_data(googleplus_data)
+twitter_data <- clean_data(twitter_data)
 
-# Output:
-# The pre-processed dataset ready for model building.
-preprocessed_dataset <- list(
-  cleaned_data = cleaned_data,
-  reduced_data = reduced_data,
-  time_series_data = time_series_data,
-  processed_data = processed_data
-)
+# Dimensionality Reduction using UMAP
+reduce_dimensions <- function(data) {
+  umap_model <- umap(data)
+  return(umap_model$layout)
+}
+
+facebook_data_reduced <- reduce_dimensions(facebook_data)
+googleplus_data_reduced <- reduce_dimensions(googleplus_data)
+twitter_data_reduced <- reduce_dimensions(twitter_data)
+
+# Update learning rate for each episode
+alpha_0 <- 0.1  # initial learning rate
+n_episodes <- 100  # number of episodes
+
+for(episode in 1:n_episodes) {
+  alpha <- alpha_0 / sqrt(episode)
+  # Further steps for each episode can be added here
+}
+
+# Time Series Analysis using LSTM
+# Assuming you have a time series dataset for this step
+lstm_model <- layer_lstm(units = 128, input_shape = c(NULL, dim(facebook_data_reduced)[2]))
+
+# Textual Data Pre-processing using BERT
+# Assuming you have a text-based feature in your dataset
+# This is a high-level representation, and actual implementation might require more details
+
+for(text_feature in c("text_feature1", "text_feature2")) {
+  # Tokenize the text using BERT tokenizer
+  # Apply text cleaning techniques
+  # Pad or truncate the tokenized sequence
+}
+
+# Evaluate the model using the testing set
+# This step requires more details about the equation and the testing set
+
+# Output: The pre-processed dataset ready for model building
+preprocessed_data <- list(facebook_data_reduced, googleplus_data_reduced, twitter_data_reduced)
